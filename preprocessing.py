@@ -50,6 +50,7 @@ class LoadData:
     def __init__(self):
         self.x_data = x_data_scaled
         self.y_data = y_data_onehot
+        self.columns = x_data.columns
 
     def load_data(self):
         return self.x_data, self.y_data
