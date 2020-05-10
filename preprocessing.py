@@ -34,7 +34,7 @@ train_file = pd.concat([train_file_challenger, train_file_grandmaster, train_fil
 num_of_features = 47
 scaler = MinMaxScaler()
 str_encoder = OneHotEncoder()
-cols_to_remove = ['blueWins', 'redWins', 'blueDeath', 'redDeath', 'blueTotalLevel', 'redTotalLevel', 'blueObjectDamageDealt', 'redObjectDamageDealt', ]
+cols_to_remove = ['blueWins', 'redWins', 'blueDeath', 'redDeath', 'blueTotalLevel', 'redTotalLevel', 'blueObjectDamageDealt', 'redObjectDamageDealt']
 
 winner = list()
 for i in train_file.index:
@@ -43,24 +43,26 @@ for i in train_file.index:
     else:
         winner.append('red')
 winner = pd.DataFrame(winner, columns=['winner'])
+
 train_file = pd.concat([train_file, winner], axis=1)
 train_file = train_file.drop(cols_to_remove, axis=1)
 
 x_data = train_file.iloc[:, 0:-1]
 y_data = np.array(train_file.iloc[:, -1]).reshape(-1, 1)
-total_data = pd.concat([pd.DataFrame(x_data, columns=train_file.columns), pd.DataFrame(y_data, columns=['winner'])], axis=1)
-total_data.to_csv(preprocessed_file_path+'total_data.csv')
 
-print("Shape of x_data", "\n", x_data.shape)
-print("Shape of y_data", "\n", y_data.shape)
-
+print("Shape of x_data\n", x_data.shape)
+print("Shape of y_data\n", y_data.shape)
 
 scaler.fit(x_data)
 x_data_scaled = scaler.transform(x_data)
+x_data_scaled = pd.DataFrame(x_data_scaled, columns=x_data.columns)
 
 str_encoder.fit(y_data)
 y_data_onehot = str_encoder.transform(y_data).toarray()
-y_data_recovery = np.argmax(y_data_onehot, axis=1).reshape(-1, 1)
+y_data_onehot = pd.DataFrame(y_data_onehot, columns=['blueWins', 'redWins'])
 
-pd.DataFrame(x_data_scaled, columns=x_data.columns).to_csv(preprocessed_file_path+'x_data.csv', index=False)
-pd.DataFrame(y_data_onehot, columns=['blueWins', 'redWins']).to_csv(preprocessed_file_path+'y_data.csv', index=False)
+total_data = pd.concat([x_data, y_data_onehot], axis=1)
+
+x_data_scaled.to_csv(preprocessed_file_path+'x_data.csv', index=False)
+y_data_onehot.to_csv(preprocessed_file_path+'y_data.csv', index=False)
+total_data.to_csv(train_file_path+'total_data.csv', index=False)
