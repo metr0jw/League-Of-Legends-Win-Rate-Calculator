@@ -8,3 +8,4 @@ https://www.kaggle.com/chuckephron/leagueoflegends
 - [ ] Build a pipeline
 - [ ] Visualize data
 - [ ] Build a model
+- [ ] Add calculating win rate at 10, 15 min
