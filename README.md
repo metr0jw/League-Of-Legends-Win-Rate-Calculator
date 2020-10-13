@@ -5,7 +5,7 @@ https://www.kaggle.com/chuckephron/leagueoflegends
 
 ## To-Do List
 - [x] Preprocess data
-- [ ] Build a pipeline
+- [x] Build a pipeline
 - [ ] Visualize data
 - [ ] Build a model
 - [ ] Add calculating win rate at 10, 15 min
